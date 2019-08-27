@@ -1,7 +1,7 @@
 timeconv
 ---
 
-![Build status](https://travis-ci.org/Andrew-M-C/go.timeconv.svg?branch=master)  ![Coverage](https://coveralls.io/repos/github/Andrew-M-C/go.timeconv/badge.svg?branch=master)
+[![Build status](https://travis-ci.org/Andrew-M-C/go.timeconv.svg?branch=master)](https://travis-ci.org/Andrew-M-C/go.timeconv)  [![Coverage](https://coveralls.io/repos/github/Andrew-M-C/go.timeconv/badge.svg?branch=master)](https://coveralls.io/github/Andrew-M-C/go.timeconv)
 
 The function `AddDate` in  [package time](https://golang.org/pkg/time/) adds dates passed in format of years, months and days. In the biginning, I thought it did handle different date of month. However, it is NOT.
 

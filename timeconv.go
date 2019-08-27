@@ -68,7 +68,7 @@ func AddDate(t time.Time, years, months, days int) time.Time {
 				da = 28
 			}
 		case 1, 3, 5, 7, 8, 10, 12:
-			// OK
+			da = 31
 		case 4, 6, 9, 11:
 			da = 30
 		}

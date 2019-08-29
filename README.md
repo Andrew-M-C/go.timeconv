@@ -29,3 +29,5 @@ func main() {
 ```
 
 [Playground](https://play.golang.org/p/-2tnI8Ejxwh)
+
+Additionally, there is a pointer version: `func AddDateP(t *time.Time, years, months, days int)`

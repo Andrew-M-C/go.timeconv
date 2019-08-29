@@ -92,3 +92,7 @@ func isLeapYear(year int) bool {
 		return false
 	}
 }
+
+func AddDateP(t *time.Time, years, months, days int) {
+	*t = AddDate(*t, years, months, days)
+}

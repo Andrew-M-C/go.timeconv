@@ -78,6 +78,11 @@ func TestAddDate(test *testing.T) {
 	expected = time.Date(2019, 10, 31, 0, 0, 0, 0, loc)
 	t = AddDate(t, 0, -2, 0)
 	check(test, t, expected)
+
+	t = time.Date(2019, 12, 31, 0, 0, 0, 0, loc)
+	expected = time.Date(2019, 10, 31, 0, 0, 0, 0, loc)
+	AddDateP(&t, 0, -2, 0)
+	check(test, t, expected)
 }
 
 func check(test *testing.T, t, expected time.Time) {

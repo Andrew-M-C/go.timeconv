@@ -85,6 +85,18 @@ func TestAddDate(test *testing.T) {
 	check(test, t, expected)
 }
 
+func TestDate(t *testing.T) {
+	loc, _ := time.LoadLocation("Asia/Shanghai")
+
+	tm := Date(2019, 12, 31)
+	expected := time.Date(2019, 12, 31, 0, 0, 0, 0, time.UTC)
+	check(t, tm, expected)
+
+	tm = Date(2019, 12, 31, loc)
+	expected = time.Date(2019, 12, 31, 0, 0, 0, 0, loc)
+	check(t, tm, expected)
+}
+
 func check(test *testing.T, t, expected time.Time) {
 	if false == t.Equal(expected) {
 		test.Errorf("Expected time %v, but got %v, error", expected, t)

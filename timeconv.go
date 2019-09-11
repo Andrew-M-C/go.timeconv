@@ -96,3 +96,11 @@ func isLeapYear(year int) bool {
 func AddDateP(t *time.Time, years, months, days int) {
 	*t = AddDate(*t, years, months, days)
 }
+
+func Date(year int, month time.Month, day int, loc ...*time.Location) time.Time {
+	if 0 == len(loc) {
+		return time.Date(year, month, day, 0, 0, 0, 0, time.UTC)
+	} else {
+		return time.Date(year, month, day, 0, 0, 0, 0, loc[0])
+	}
+}

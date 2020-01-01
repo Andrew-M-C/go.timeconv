@@ -102,3 +102,15 @@ func check(test *testing.T, t, expected time.Time) {
 		test.Errorf("Expected time %v, but got %v, error", expected, t)
 	}
 }
+
+func TestUnix(t *testing.T) {
+	now := time.Now()
+	nano := now.UnixNano()
+
+	if nano/1000 != UnixMicro(now) {
+		t.Errorf("%d != %d !!!", nano/1000, UnixMicro(now))
+	}
+	if nano/1000000 != UnixMilli(now) {
+		t.Errorf("%d != %d !!!", nano/1000000, UnixMilli(now))
+	}
+}

@@ -1,3 +1,4 @@
+// Package timeconv provides some simple function to convert go time.Time values. Please refer to functions below.
 package timeconv
 
 import (
@@ -5,6 +6,9 @@ import (
 	"time"
 )
 
+// AddDate returns the time corresponding to adding the given number of years, months, and days to t. For example, AddDate(-1, 2, 3) applied to January 1, 2011 returns March 4, 2010.
+//
+// However, this version of AddDate will examine the date of month. For example, AddDate(0, 1, 0) applied to January 31, 2011 returns Feburary 28, 2011 instead of March 3, 2011.
 func AddDate(t time.Time, years, months, days int) time.Time {
 	// limit month
 	if months >= 12 || months <= 12 {
@@ -32,10 +36,10 @@ func AddDate(t time.Time, years, months, days int) time.Time {
 	mo += time.Month(months)
 	if mo > 12 {
 		mo -= 12
-		ye += 1
+		ye++
 	} else if mo < 1 {
 		mo += 12
-		ye -= 1
+		ye--
 	}
 
 	// after adding month, we should adjust day of month value
@@ -85,22 +89,31 @@ func isLeapYear(year int) bool {
 	if 0 == year%4 {
 		if 0 == year%100 {
 			return 0 == year%400
-		} else {
-			return true
 		}
-	} else {
-		return false
+		return true
 	}
+	return false
 }
 
+// AddDateP is the pointer version of AddDate()
 func AddDateP(t *time.Time, years, months, days int) {
 	*t = AddDate(*t, years, months, days)
 }
 
+// Date return a time.Time value with year, month, day and location only.
 func Date(year int, month time.Month, day int, loc ...*time.Location) time.Time {
 	if 0 == len(loc) {
 		return time.Date(year, month, day, 0, 0, 0, 0, time.UTC)
-	} else {
-		return time.Date(year, month, day, 0, 0, 0, 0, loc[0])
 	}
+	return time.Date(year, month, day, 0, 0, 0, 0, loc[0])
+}
+
+// UnixMilli returns Unix timestamp in milliseconds
+func UnixMilli(t time.Time) int64 {
+	return t.UnixNano() / int64(time.Millisecond)
+}
+
+// UnixMicro returns Unix timestamp in microseconds
+func UnixMicro(t time.Time) int64 {
+	return t.UnixNano() / int64(time.Microsecond)
 }

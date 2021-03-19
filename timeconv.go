@@ -6,6 +6,10 @@ import (
 	"time"
 )
 
+var (
+	uptime = time.Now()
+)
+
 // AddDate returns the time corresponding to adding the given number of years, months, and days to t. For example, AddDate(-1, 2, 3) applied to January 1, 2011 returns March 4, 2010.
 //
 // However, this version of AddDate will examine the date of month. For example, AddDate(0, 1, 0) applied to January 31, 2011 returns Feburary 28, 2011 instead of March 3, 2011.
@@ -100,7 +104,7 @@ func AddDateP(t *time.Time, years, months, days int) {
 	*t = AddDate(*t, years, months, days)
 }
 
-// Date return a time.Time value with year, month, day and location only.
+// Date returns a time.Time value with year, month, day and location only. If not indecating loc, UTC will be used.
 func Date(year int, month time.Month, day int, loc ...*time.Location) time.Time {
 	if 0 == len(loc) {
 		return time.Date(year, month, day, 0, 0, 0, 0, time.UTC)
@@ -116,4 +120,9 @@ func UnixMilli(t time.Time) int64 {
 // UnixMicro returns Unix timestamp in microseconds
 func UnixMicro(t time.Time) int64 {
 	return t.UnixNano() / int64(time.Microsecond)
+}
+
+// ProcUpDuration returns a rough duration indecating how long current process has run.
+func ProcUpDuration() time.Duration {
+	return time.Since(uptime)
 }

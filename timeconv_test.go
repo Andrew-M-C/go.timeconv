@@ -126,3 +126,22 @@ func TestUnix(t *testing.T) {
 		t.Errorf("%d != %d !!!", nano/1000000, UnixMilli(now))
 	}
 }
+
+func TestFormat(t *testing.T) {
+	now := time.Now()
+
+	test := func(s, format string) {
+		expect := now.Format(format)
+		if s != expect {
+			t.Errorf("format '%s', expect '%s', but got '%s'", format, expect, s)
+		}
+	}
+
+	test(YYYYMMDD(now, "-"), "2006-01-02")
+	test(YYMMDD(now, ","), "06,01,02")
+	test(HHMM(now, "."), "03.04")
+	test(HHMMSS(now, ":"), "03:04:05")
+	test(HHMMSS(now, ":", 3), "03:04:05.000")
+	test(HHMMSS(now, ":", 9), "03:04:05.000000000")
+	test(HHMMSS(now, ":", 11), "03:04:05.000000000")
+}

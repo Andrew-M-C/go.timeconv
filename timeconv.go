@@ -3,6 +3,8 @@ package timeconv
 
 import (
 	// "log"
+	"bytes"
+	"fmt"
 	"time"
 )
 
@@ -51,12 +53,12 @@ func AddDate(t time.Time, years, months, days int) time.Time {
 		// nothing to change
 	} else if da == 29 {
 		if mo == 2 {
-			if false == isLeapYear(ye) {
+			if !isLeapYear(ye) {
 				da = 28
 			}
-		} else {
-			// OK
 		}
+		// else, OK
+
 	} else if da == 30 {
 		if mo == 2 {
 			if isLeapYear(ye) {
@@ -64,9 +66,9 @@ func AddDate(t time.Time, years, months, days int) time.Time {
 			} else {
 				da = 28
 			}
-		} else {
-			// OK
 		}
+		// else, OK
+
 	} else if da == 31 {
 		switch mo {
 		case 2:
@@ -90,9 +92,9 @@ func AddDate(t time.Time, years, months, days int) time.Time {
 }
 
 func isLeapYear(year int) bool {
-	if 0 == year%4 {
-		if 0 == year%100 {
-			return 0 == year%400
+	if year%4 == 0 {
+		if year%100 == 0 {
+			return year%400 == 0
 		}
 		return true
 	}
@@ -106,7 +108,7 @@ func AddDateP(t *time.Time, years, months, days int) {
 
 // Date returns a time.Time value with year, month, day and location only. If not indecating loc, UTC will be used.
 func Date(year int, month time.Month, day int, loc ...*time.Location) time.Time {
-	if 0 == len(loc) {
+	if len(loc) == 0 {
 		return time.Date(year, month, day, 0, 0, 0, 0, time.UTC)
 	}
 	return time.Date(year, month, day, 0, 0, 0, 0, loc[0])
@@ -125,4 +127,45 @@ func UnixMicro(t time.Time) int64 {
 // ProcUpDuration returns a rough duration indecating how long current process has run.
 func ProcUpDuration() time.Duration {
 	return time.Since(uptime)
+}
+
+// YYYYMMDD is equivalent to t.Format(fmt.Sprintf("2006%s01%s02", seperator, seperator))
+func YYYYMMDD(t time.Time, seperator string) string {
+	f := fmt.Sprintf("2006%s01%s02", seperator, seperator)
+	return t.Format(f)
+}
+
+// YYMMDD is equivalent to t.Format(fmt.Sprintf("06%s01%s02", seperator, seperator))
+func YYMMDD(t time.Time, seperator string) string {
+	f := fmt.Sprintf("06%s01%s02", seperator, seperator)
+	return t.Format(f)
+}
+
+// HHMM is equivalent to t.Format(fmt.Sprintf("03%s04", seperator))
+func HHMM(t time.Time, seperator string) string {
+	f := fmt.Sprintf("03%s04", seperator)
+	return t.Format(f)
+}
+
+// HHMMSS is equivalent to t.Format(fmt.Sprintf("03%s04%s05", seperator, seperator)).
+// With decimal, additional decimal digits of seconds will be added after a dot.
+func HHMMSS(t time.Time, seperator string, decimal ...int) string {
+	buff := bytes.Buffer{}
+
+	buff.WriteString("03")
+	buff.WriteString(seperator)
+	buff.WriteString("04")
+	buff.WriteString(seperator)
+	buff.WriteString("05")
+
+	if len(decimal) > 0 && decimal[0] != 0 {
+		buff.WriteRune('.')
+		dec := decimal[0]
+
+		for i := 0; i < dec && i < 9; i++ {
+			buff.WriteRune('0')
+		}
+	}
+
+	return t.Format(buff.String())
 }
